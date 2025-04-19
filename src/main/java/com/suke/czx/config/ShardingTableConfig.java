@@ -73,7 +73,7 @@ public class ShardingTableConfig {
      * 每小时执行一次
      */
 //    @Scheduled(cron = "0 0 0/1 * * ?")
-    @Scheduled(cron = "1/5 * * * * ?")
+//    @Scheduled(cron = "1/5 * * * * ?")
     private void createShardingTable() {
         // 上锁30秒
         final boolean success = redissonLock.lock(Constant.SYSTEM_NAME + "createShardingTable", 30, TimeUnit.SECONDS);

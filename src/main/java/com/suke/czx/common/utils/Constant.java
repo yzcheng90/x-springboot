@@ -23,6 +23,7 @@ public class Constant {
      * 超级管理员ID
      */
     public static final String SUPER_ADMIN = "0";
+    public static final String SUPER_MINI_ADMIN = "1";
 
     public static final int CODE_SIZE = 4;
 

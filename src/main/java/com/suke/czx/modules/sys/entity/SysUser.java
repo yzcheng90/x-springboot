@@ -52,6 +52,9 @@ public class SysUser implements Serializable {
     @Schema(description = "创建者ID")
     public String createUserId;
 
+    @Schema(description = "租户ID")
+    public Integer tenancyId;
+
     @Schema(description = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date createTime;

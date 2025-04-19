@@ -59,11 +59,3 @@ mybatis-plus:
       field-strategy: 1
       # 默认数据库表下划线命名
       table-underline: true
-
-sharding-table:
-  - table:
-      name: tb_browse_record
-      sharding-column: create_time
-  - table:
-      name: tb_sign_record
-      sharding-column: create_time

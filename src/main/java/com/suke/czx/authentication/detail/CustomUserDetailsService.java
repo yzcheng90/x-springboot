@@ -65,7 +65,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         //证书未过期
         boolean credentialsNonExpired = true;
 
-        return new CustomUserDetailsUser(sysUser.getUserId(),
+        return new CustomUserDetailsUser(sysUser.getTenancyId(),
+                sysUser.getUserId(),
                 sysUser.getUsername(),
                 sysUser.getPassword(),
                 enabled,
