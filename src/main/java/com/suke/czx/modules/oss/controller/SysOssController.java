@@ -1,5 +1,6 @@
 package com.suke.czx.modules.oss.controller;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -10,13 +11,12 @@ import com.suke.czx.modules.apk.entity.TbApkVersion;
 import com.suke.czx.modules.oss.cloud.ICloudStorage;
 import com.suke.czx.modules.oss.entity.SysOss;
 import com.suke.czx.modules.oss.service.SysOssService;
-import com.suke.zhjg.common.autofull.util.R;
-import io.swagger.annotations.Api;
+import com.suke.czx.common.utils.R;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dongliu.apk.parser.ApkFile;
 import net.dongliu.apk.parser.bean.ApkMeta;
-import org.apache.commons.io.FileUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,7 +36,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("sys/oss")
 @AllArgsConstructor
-@Api(value = "SysOssController", tags = "文件上传")
+@Tag(name = "SysOssController", description = "文件上传")
 public class SysOssController extends AbstractController {
 
     private final SysOssService sysOssService;
@@ -95,7 +95,7 @@ public class SysOssController extends AbstractController {
         TbApkVersion apkVersion = null;
         File tempFile = new File(fileName);
         try {
-            FileUtils.copyInputStreamToFile(file.getInputStream(), tempFile);
+            FileUtil.writeFromStream(file.getInputStream(), tempFile);
             ApkFile apkFile = new ApkFile(tempFile);
             ApkMeta apkMeta = apkFile.getApkMeta();
             apkVersion = new TbApkVersion();

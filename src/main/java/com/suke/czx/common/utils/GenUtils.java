@@ -9,17 +9,18 @@ import com.suke.czx.modules.gen.entity.InfoRmationSchema;
 import com.suke.czx.modules.gen.entity.MakerConfigEntity;
 import com.suke.czx.modules.gen.entity.TableEntity;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.*;
 
@@ -55,7 +56,7 @@ public class GenUtils {
      */
     public void maker(MakerConfigEntity makerConfig, InfoRmationSchema table, List<ColumnEntity> columns) {
         //配置信息
-        Configuration config = getConfig();
+        Properties config = getConfig();
         boolean hasBigDecimal = false;
         //表信息
         TableEntity tableEntity = new TableEntity();
@@ -85,7 +86,7 @@ public class GenUtils {
             columnEntity.setAttrNameMin(StringUtils.uncapitalize(attrName));
 
             //列的数据类型，转换成Java类型
-            String attrType = config.getString(columnEntity.getDataType(), "unknowType");
+            String attrType = config.getProperty(columnEntity.getDataType(), "unknowType");
             columnEntity.setAttrType(attrType);
             if (!hasBigDecimal && attrType.equals("BigDecimal")) {
                 hasBigDecimal = true;
@@ -166,10 +167,11 @@ public class GenUtils {
     /**
      * 获取配置信息
      */
-    public Configuration getConfig() {
+    public Properties getConfig() {
         try {
-            return new PropertiesConfiguration("generator.properties");
-        } catch (ConfigurationException e) {
+            Resource resource = new ClassPathResource("generator.properties");
+            return PropertiesLoaderUtils.loadProperties(resource);
+        } catch (IOException e) {
             log.error("获取配置文件失败:{}",e.getMessage());
             throw new RRException("获取配置文件失败");
         }

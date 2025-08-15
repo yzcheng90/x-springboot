@@ -10,34 +10,31 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
-  redis:
-    host: localhost
-    port: 6379
-    password:       # 密码（默认为空）
   servlet:
     multipart:
       maxFileSize: 104857600 #100MB
       maxRequestSize: 104857600 #100MB
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher  #解决swaggerUI不匹配接口
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 swagger:
-  enable: true
   title: X-SpringBoot API
   description: API 描述
-  version: 5.0.0
+  version: 6.0.0
   author: czx
   url: https://github.com/yzcheng90/X-SpringBoot
   email: object_czx@163.com
 
-# autofull 配置
-autofull:
-  showLog: false
-  maxLevel: 1
-  currLevel: 0
-  encryptFlag: "@autofull@"
-  encryptKeys: "abcdefg123456789"
+springdoc:
+  api-docs:
+    enabled: false # 开启OpenApi接口
+    path: /v3/api-docs  # 自定义路径，默认为 "/v3/api-docs"
+  swagger-ui:
+    enabled: false # 开启swagger界面，依赖OpenApi，需要OpenApi同时开启
+    path: /swagger-ui/index.html # 自定义路径，默认为"/swagger-ui/index.html"
+
 
 #七牛 AK  和  SK可以去密钥管理中查询
 qiniu:
@@ -54,6 +51,7 @@ mybatis-plus:
   global-config:
     # 关闭MP3.0自带的banner
     banner: false
+    enable-sql-runner: true
     db-config:
       # 主键类型 0:数据库ID自增 1.未定义 2.用户输入 3 id_worker 4.uuid 5.id_worker字符串表示
       id-type: 0
@@ -61,4 +59,3 @@ mybatis-plus:
       field-strategy: 1
       # 默认数据库表下划线命名
       table-underline: true
-

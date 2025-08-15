@@ -3,8 +3,7 @@ package com.suke.czx.modules.sys.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.Date;
@@ -18,31 +17,31 @@ import java.util.Date;
  * @date 2017-03-08 10:40:56
  */
 @Data
-@ApiModel(value = "系统日志")
+@Schema(description = "系统日志")
 public class SysLog {
 
     @TableId(type = IdType.AUTO)
     public Long id;
 
-    @ApiModelProperty(value = "用户名")
+    @Schema(description = "用户名")
     public String username;
 
-    @ApiModelProperty(value = "用户操作")
+    @Schema(description = "用户操作")
     public String operation;
 
-    @ApiModelProperty(value = "请求方法")
+    @Schema(description = "请求方法")
     public String method;
 
-    @ApiModelProperty(value = "请求参数")
+    @Schema(description = "请求参数")
     public String params;
 
-    @ApiModelProperty(value = "执行时长(毫秒)")
+    @Schema(description = "执行时长(毫秒)")
     public Long time;
 
-    @ApiModelProperty(value = "IP地址")
+    @Schema(description = "IP地址")
     public String ip;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @ApiModelProperty(value = "创建时间")
+    @Schema(description = "创建时间")
     public Date createDate;
 }

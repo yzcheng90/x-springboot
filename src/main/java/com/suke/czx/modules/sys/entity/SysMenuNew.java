@@ -3,8 +3,7 @@ package com.suke.czx.modules.sys.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,14 +15,14 @@ import java.io.Serializable;
  **/
 @Data
 @TableName("sys_menu_new")
-@ApiModel(value = "菜单管理")
+@Schema(description = "菜单管理")
 public class SysMenuNew implements Serializable {
 
     @TableId(value = "menu_id", type = IdType.AUTO)
-    @ApiModelProperty(value = "菜单ID")
+    @Schema(description = "菜单ID")
     public Long menuId;
 
-    @ApiModelProperty(value = "父菜单ID，一级菜单为0")
+    @Schema(description = "父菜单ID，一级菜单为0")
     public Long parentId;
 
     public String path;

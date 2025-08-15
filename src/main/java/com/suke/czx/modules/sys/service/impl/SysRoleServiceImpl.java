@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.suke.czx.modules.sys.entity.SysRole;
 import com.suke.czx.modules.sys.entity.SysRoleMenu;
+import com.suke.czx.modules.sys.entity.SysRolePermission;
 import com.suke.czx.modules.sys.mapper.SysRoleMapper;
 import com.suke.czx.modules.sys.service.SysRoleMenuService;
+import com.suke.czx.modules.sys.service.SysRolePermissionService;
 import com.suke.czx.modules.sys.service.SysRoleService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     private final SysRoleMapper sysRoleMapper;
     private final SysRoleMenuService sysRoleMenuService;
+    private final SysRolePermissionService sysRolePermissionService;
 
     @Override
     @Transactional
@@ -44,6 +47,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 return menu;
             }).collect(Collectors.toList());
             sysRoleMenuService.saveBatch(sysRoleMenus);
+        }
+        if (CollUtil.isNotEmpty(role.getPermissionList())) {
+            this.saveRolePermission(role);
         }
     }
 
@@ -61,6 +67,21 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             }).collect(Collectors.toList());
             sysRoleMenuService.saveBatch(sysRoleMenus);
         }
+
+        if (CollUtil.isNotEmpty(role.getPermissionList())) {
+            sysRolePermissionService.remove(Wrappers.<SysRolePermission>query().lambda().eq(SysRolePermission::getRoleId, role.getRoleId()));
+            this.saveRolePermission(role);
+        }
+    }
+
+    public void saveRolePermission(SysRole role) {
+        List<SysRolePermission> sysPermissions = role.getPermissionList().stream().map(id -> {
+            SysRolePermission menu = new SysRolePermission();
+            menu.setPermissionId(id);
+            menu.setRoleId(role.getRoleId());
+            return menu;
+        }).collect(Collectors.toList());
+        sysRolePermissionService.saveBatch(sysPermissions);
     }
 
     @Override

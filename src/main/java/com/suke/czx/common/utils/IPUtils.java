@@ -1,10 +1,8 @@
 package com.suke.czx.common.utils;
 
 import cn.hutool.core.util.StrUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * IP地址
@@ -13,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
  * @email object_czx@163.com
  * @date 2017年3月8日 下午12:57:02
  */
+@Slf4j
 public class IPUtils {
-	private static Logger logger = LoggerFactory.getLogger(IPUtils.class);
 
 	/**
 	 * 获取IP地址
@@ -42,7 +40,7 @@ public class IPUtils {
                 ip = request.getRemoteAddr();
             }
         } catch (Exception e) {
-        	logger.error("IPUtils ERROR ", e);
+        	log.error("IPUtils ERROR ", e);
         }
         
 //        //使用代理，则获取第一个IP地址

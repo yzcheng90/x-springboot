@@ -5,17 +5,20 @@ import com.google.code.kaptcha.Producer;
 import com.suke.czx.common.annotation.AuthIgnore;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
-import com.suke.zhjg.common.autofull.util.R;
-import io.swagger.annotations.Api;
+import com.suke.czx.common.utils.R;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.TimeUnit;
 
@@ -28,11 +31,11 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@Api(value = "SysLoginController", tags = "登录相关")
+@Tag(name = "SysLoginController", description = "登录相关")
 public class SysLoginController extends AbstractController {
 
     private final Producer producer;
-    private final RedisTemplate redisTemplate;
+    private final RedisTemplate<Object,Object> redisTemplate;
 
     @AuthIgnore
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -61,14 +64,5 @@ public class SysLoginController extends AbstractController {
         ServletOutputStream out = response.getOutputStream();
         ImageIO.write(image, "jpg", out);
         IoUtil.close(out);
-    }
-
-    /**
-     * 退出
-     */
-    @AuthIgnore
-    @GetMapping(value = "/sys/logout")
-    public void logout() {
-
     }
 }

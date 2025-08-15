@@ -3,7 +3,7 @@ package com.suke.czx.modules.sys.vo;
 import lombok.Data;
 
 /**
- * @Description //TODO $
+ * @Description : 用户信息
  * @Date 12:50
  * @Author yzcheng90@qq.com
  **/

@@ -2,25 +2,26 @@ package com.suke.czx.authentication.handler;
 
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.SecureUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import cn.hutool.json.JSONUtil;
 import com.suke.czx.authentication.detail.CustomUserDetailsUser;
 import com.suke.czx.common.event.LoginLogEvent;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.common.utils.IPUtils;
+import com.suke.czx.common.utils.R;
 import com.suke.czx.common.utils.SpringContextUtils;
 import com.suke.czx.modules.sys.entity.SysLoginLog;
-import com.suke.zhjg.common.autofull.util.R;
+
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -34,10 +35,8 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    @Autowired
-    private RedisTemplate redisTemplate;
-
-    private ObjectMapper objectMapper = new ObjectMapper();
+    @Resource
+    private RedisTemplate<Object,Object> redisTemplate;
 
     @SneakyThrows
     @Override
@@ -68,6 +67,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         response.setCharacterEncoding(CharsetUtil.UTF_8);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         PrintWriter printWriter = response.getWriter();
-        printWriter.append(objectMapper.writeValueAsString(R.ok().put(Constant.TOKEN, token)));
+        printWriter.append(JSONUtil.toJsonStr(R.ok().put(Constant.TOKEN, token)));
     }
 }

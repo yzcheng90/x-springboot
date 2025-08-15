@@ -16,14 +16,14 @@
 - 引入了MyBatis Plus 大量简化了SQL
 - 引入hutool 工具包 规范工具类
 - 引入minio 分布式文件系统
-- 引入[autoFull](https://github.com/yzcheng90/zhjg-common-autofull) 自动填充绑定框架,多表关联不用写sql
+- 新增RBAC权限控制
 - 前后端完全脱离，前端代码可单独部署
 - 自定义Spring Security 支持获取token
 - 新增RBAC接口级权限控制
 - 账号密码：admin/admin
 
  
-**版本信息** 
+**版本信息**
 - 核心框架：Spring Boot 3.5.5
 - 安全框架：Spring Security 6.x
 - 持久层框架：MyBatis Plus 3.5.9
@@ -76,20 +76,6 @@ X-SpringBoot
 ![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20230122174148.png)
 ![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20230122174204.png)
 
-**常见问题**
-
-1、启动报错
-```
- 是因为依赖没有引入  maven --> 先clear 再reimport 重新引入
-```
-
-2、数据库连接不上（mysql 5.7）
-
-```
-1) 看看application.yml 配置文件中 spring.profiles.active: dev  
-   当前配置的是dev ,就修改application-dev.yml 中的数据库连接IP用户密码
-2) 如果改完了还是不行，看看你mysql版本8.0以上 须要修改pom.xml中的 mysql-connector-java 的版本
-```
 
  **最后**
 

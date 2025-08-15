@@ -3,13 +3,14 @@ package com.suke.czx.modules.sys.controller;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.suke.czx.common.annotation.ResourceAuth;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.modules.sys.entity.SysLog;
 import com.suke.czx.modules.sys.entity.SysLoginLog;
 import com.suke.czx.modules.sys.service.SysLogService;
 import com.suke.czx.modules.sys.service.SysLoginLogService;
-import com.suke.zhjg.common.autofull.util.R;
-import io.swagger.annotations.Api;
+import com.suke.czx.common.utils.R;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,7 @@ import java.util.Map;
  */
 @RestController
 @AllArgsConstructor
-@Api(value = "SysLogController", tags = "系统日志")
+@Tag(name = "SysLogController", description = "系统日志")
 @RequestMapping("/sys/log")
 public class SysLogController extends AbstractController {
     private final SysLogService sysLogService;
@@ -37,6 +38,7 @@ public class SysLogController extends AbstractController {
      * 列表
      */
     @GetMapping(value = "/list")
+    @ResourceAuth(value = "系统日志列表", module = "系统日志")
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         QueryWrapper<SysLog> queryWrapper = new QueryWrapper<>();
@@ -57,6 +59,7 @@ public class SysLogController extends AbstractController {
      * 列表
      */
     @GetMapping(value = "/loginList")
+    @ResourceAuth(value = "登录日志列表", module = "系统日志")
     public R loginList(@RequestParam Map<String, Object> params) {
         //查询列表数据
         QueryWrapper<SysLoginLog> queryWrapper = new QueryWrapper<>();

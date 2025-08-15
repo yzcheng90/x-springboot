@@ -7,8 +7,8 @@ import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.modules.gen.entity.InfoRmationSchema;
 import com.suke.czx.modules.gen.entity.MakerConfigEntity;
 import com.suke.czx.modules.gen.service.SysGenService;
-import com.suke.zhjg.common.autofull.util.R;
-import io.swagger.annotations.Api;
+import com.suke.czx.common.utils.R;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sys/gen")
 @AllArgsConstructor
-@Api(value = "SysGenController", tags = "代码生成")
+@Tag(name = "SysGenController", description = "代码生成")
 public class SysGenController extends AbstractController {
 
     private final SysGenService sysGenService;

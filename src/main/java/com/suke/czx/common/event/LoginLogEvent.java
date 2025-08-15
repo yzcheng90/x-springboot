@@ -4,7 +4,7 @@ import com.suke.czx.modules.sys.entity.SysLoginLog;
 import org.springframework.context.ApplicationEvent;
 
 /**
- * @Description //TODO $
+ * @Description 登录日志事件
  * @Date 11:29
  * @Author yzcheng90@qq.com
  **/

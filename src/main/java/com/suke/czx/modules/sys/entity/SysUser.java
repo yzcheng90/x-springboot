@@ -5,13 +5,9 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.suke.zhjg.common.autofull.annotation.AutoFullEmpty;
-import com.suke.zhjg.common.autofull.annotation.AutoFullListSQL;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +20,7 @@ import java.util.List;
  */
 @Data
 @TableName("sys_user")
-@ApiModel(value = "系统用户")
+@Schema(description = "系统用户")
 public class SysUser implements Serializable {
 
     public static final long serialVersionUID = 1L;
@@ -32,39 +28,38 @@ public class SysUser implements Serializable {
     @TableId(value = "user_id", type = IdType.ASSIGN_UUID)
     public String userId;
 
-    @ApiModelProperty(value = "用户名")
-    @NotBlank(message = "用户名不能为空")
+    @Schema(description = "用户名")
     public String username;
 
-    @ApiModelProperty(value = "姓名")
+    @Schema(description = "姓名")
     public String name;
 
-    @AutoFullEmpty
-    @ApiModelProperty(value = "密码")
+    @Schema(description = "密码")
     public String password;
 
-    @ApiModelProperty(value = "邮箱")
-    @NotBlank(message = "邮箱不能为空")
+    @Schema(description = "邮箱")
     public String email;
 
-    @ApiModelProperty(value = "手机号")
+    @Schema(description = "手机号")
     public String mobile;
 
-    @ApiModelProperty(value = "头像")
+    @Schema(description = "头像")
     public String photo;
 
-    @ApiModelProperty(value = "状态  0：禁用   1：正常")
+    @Schema(description = "状态  0：禁用   1：正常")
     public Integer status;
 
-    @ApiModelProperty(value = "创建者ID")
+    @Schema(description = "创建者ID")
     public String createUserId;
 
-    @ApiModelProperty(value = "创建时间")
+    @Schema(description = "租户ID")
+    public Integer tenancyId;
+
+    @Schema(description = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date createTime;
 
     @TableField(exist = false)
-    @ApiModelProperty(value = "角色ID")
-    @AutoFullListSQL(sql = "select role_id as roleIdList from sys_user_role where user_id = {userId}")
+    @Schema(description = "角色ID")
     public List<Long> roleIdList;
 }

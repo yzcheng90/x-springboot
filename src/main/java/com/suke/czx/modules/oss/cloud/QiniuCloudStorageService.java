@@ -1,14 +1,13 @@
 package com.suke.czx.modules.oss.cloud;
 
+import cn.hutool.core.io.IoUtil;
 import com.qiniu.http.Response;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import com.suke.czx.common.exception.RRException;
 import lombok.AllArgsConstructor;
-import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -43,12 +42,8 @@ public class QiniuCloudStorageService implements ICloudStorage {
 
     @Override
     public String upload(InputStream inputStream, String path) {
-        try {
-            byte[] data = IOUtils.toByteArray(inputStream);
-            return this.upload(data, path);
-        } catch (IOException e) {
-            throw new RRException("上传文件失败", e);
-        }
+        byte[] data = IoUtil.readBytes(inputStream);
+        return this.upload(data, path);
     }
 
     @Override

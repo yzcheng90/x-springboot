@@ -3,6 +3,9 @@ package com.suke.czx.interceptor;
 import cn.hutool.core.util.StrUtil;
 import com.suke.czx.common.exception.CustomAuthenticationException;
 import com.suke.czx.common.utils.Constant;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -10,25 +13,19 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * @author czx
- * @title: ValidateCodeFilter
- * @projectName x-springboot
- * @description: TODO
+ * @description: 验证码拦截器
  * @date 2019/12/2416:29
  */
 @Slf4j
 public class ValidateCodeFilter extends OncePerRequestFilter {
 
-    private AntPathMatcher pathMatcher = new AntPathMatcher();
-    private RedisTemplate redisTemplate;
-    private AuthenticationFailureHandler authenticationFailureHandler;
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
+    private final RedisTemplate<Object,Object> redisTemplate;
+    private final AuthenticationFailureHandler authenticationFailureHandler;
 
-    public ValidateCodeFilter(RedisTemplate redisTemplate, AuthenticationFailureHandler authenticationFailureHandler){
+    public ValidateCodeFilter(RedisTemplate<Object,Object> redisTemplate, AuthenticationFailureHandler authenticationFailureHandler){
         this.redisTemplate = redisTemplate;
         this.authenticationFailureHandler = authenticationFailureHandler;
     }
