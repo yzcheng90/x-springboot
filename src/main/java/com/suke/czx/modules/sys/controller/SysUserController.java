@@ -10,13 +10,13 @@ import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.common.utils.HttpContextUtils;
 import com.suke.czx.common.utils.IPUtils;
+import com.suke.czx.common.utils.R;
 import com.suke.czx.modules.sys.entity.SysUser;
 import com.suke.czx.modules.sys.service.SysMenuNewService;
 import com.suke.czx.modules.sys.service.SysUserService;
 import com.suke.czx.modules.sys.vo.RouterInfo;
 import com.suke.czx.modules.sys.vo.SysMenuNewVO;
 import com.suke.czx.modules.sys.vo.UserInfoVO;
-import com.suke.czx.common.utils.R;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -107,7 +107,6 @@ public class SysUserController extends AbstractController {
         if (StrUtil.isEmpty(newPassword)) {
             return R.error("新密码不为能空");
         }
-        password = passwordEncoder.encode(password);
         newPassword = passwordEncoder.encode(newPassword);
 
         SysUser user = sysUserService.getById(getUserId());

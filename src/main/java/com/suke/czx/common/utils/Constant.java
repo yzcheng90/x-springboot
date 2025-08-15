@@ -10,6 +10,7 @@ package com.suke.czx.common.utils;
 public class Constant {
 
     public static final String SYSTEM_NAME = "x-springboot:";
+    public static final String SYSTEM_CACHE = "x-springboot:default-cache:";
     public static final String NUMBER_CODE_KEY = SYSTEM_NAME + "number:code:";
     public static final String MOBILE_CODE_KEY = SYSTEM_NAME + "mobile:code:";
     public static final String AUTHENTICATION_TOKEN = SYSTEM_NAME + "token:";

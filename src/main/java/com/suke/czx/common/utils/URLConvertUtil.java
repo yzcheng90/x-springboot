@@ -4,7 +4,7 @@ package com.suke.czx.common.utils;
  * @author czx
  * @title: URLConvertUtil
  * @projectName zhjg
- * @description: TODO rest url 转驼峰
+ * @description: rest url 转驼峰
  * @date 2020/5/18 11:46
  */
 public class URLConvertUtil {
@@ -16,7 +16,7 @@ public class URLConvertUtil {
         if(url.contains(INDEX)){
             url = url.substring(0,url.indexOf(INDEX));
         }
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i=0;i<url.length();i++){
             char c = url.charAt(i);
             if(i == 0){

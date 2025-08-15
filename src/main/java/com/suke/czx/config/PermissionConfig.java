@@ -50,7 +50,7 @@ public class PermissionConfig implements InitializingBean {
                 entity.setName(method.value());
                 entity.setModuleName(method.module());
                 if(mappingInfo.getPathPatternsCondition() != null){
-                    mappingInfo.getPathPatternsCondition().getPatternValues().stream().forEach(url -> {
+                    mappingInfo.getPathPatternsCondition().getPatternValues().forEach(url -> {
                         String strUrl = URLConvertUtil.capture(url);
                         String permission = URLConvertUtil.convert(url);
                         entity.setUrl(strUrl);
@@ -62,12 +62,14 @@ public class PermissionConfig implements InitializingBean {
         });
     }
 
-    public PermissionEntity match(String url){
+    public PermissionEntity match(String url) {
         List<PermissionEntity> entityList = permissionEntities
-                .stream().filter(permission -> antPathMatcher.match(permission.getUrl(), url)).collect(Collectors.toList());
-        if(CollUtil.isNotEmpty(entityList)){
-            return entityList.get(0);
-        }else {
+                .stream()
+                .filter(permission -> antPathMatcher.match(permission.getUrl(), url))
+                .collect(Collectors.toList());
+        if (CollUtil.isNotEmpty(entityList)) {
+            return entityList.getFirst();
+        } else {
             return null;
         }
     }

@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * @Description //TODO $
+ * @Description
  * @Date 16:38
  * @Author yzcheng90@qq.com
  **/

@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * @author czx
  * @title: AuthIgnoreConfig
  * @projectName x-springboot
- * @description: TODO
+ * @description: 忽略权限认证
  * @date 2019/12/2415:56
  */
 @Slf4j
@@ -55,7 +55,7 @@ public class AuthIgnoreConfig implements InitializingBean {
             if(method != null){
                 PathPatternsRequestCondition pathPatternsCondition = mappingInfo.getPathPatternsCondition();
                 if(pathPatternsCondition != null){
-                    pathPatternsCondition.getPatterns().stream().forEach(url ->{
+                    pathPatternsCondition.getPatterns().forEach(url ->{
                         String patternString = url.getPatternString();
                         ignoreUrls.add(ReUtil.replaceAll(patternString, PATTERN, ASTERISK));
                     });
@@ -64,12 +64,12 @@ public class AuthIgnoreConfig implements InitializingBean {
         });
     }
 
-    public boolean isContains(String url){
+    public boolean isContains(String url) {
         final String u = ReUtil.replaceAll(url, PATTERN, ASTERISK);
         return ignoreUrls.contains(u);
     }
 
-    public boolean match(String url){
+    public boolean match(String url) {
         long count = ignoreUrls.stream().filter(u -> antPathMatcher.match(u, url)).count();
         return count > 0;
     }

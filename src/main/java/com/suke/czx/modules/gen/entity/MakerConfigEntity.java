@@ -6,7 +6,7 @@ import lombok.Data;
  * @author czx
  * @title: MakerConfigEntity
  * @projectName zhjg
- * @description: TODO
+ * @description:
  * @date 2020/6/168:57
  */
 @Data

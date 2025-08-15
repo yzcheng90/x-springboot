@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * @Description //TODO $
+ * @Description
  * @Date 10:46
  * @Author yzcheng90@qq.com
  **/

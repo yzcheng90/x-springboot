@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class R extends HashMap<String,Object> {
     public R() {
-        this.put((String)"code", 0);
-        this.put((String)"msg", "success");
+        this.put("code", 0);
+        this.put("msg", "success");
     }
 
     public static R error() {
@@ -19,21 +19,20 @@ public class R extends HashMap<String,Object> {
 
     public static R error(int code, String msg) {
         R r = new R();
-        r.put((String)"code", code);
-        r.put((String)"msg", msg);
+        r.put("code", code);
+        r.put("msg", msg);
         return r;
     }
 
     public static R ok(String msg) {
         R r = new R();
-        r.put((String)"msg", msg);
+        r.put("msg", msg);
         return r;
     }
 
     public static R ok(String msg, String data) {
-        R r = new R();
-        r.put((String)"msg", msg);
-        r.put((String)"data", data);
+        R r = ok(msg);
+        r.put("data", data);
         return r;
     }
 
