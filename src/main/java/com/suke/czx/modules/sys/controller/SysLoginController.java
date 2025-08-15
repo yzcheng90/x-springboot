@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 public class SysLoginController extends AbstractController {
 
     private final Producer producer;
-    private final RedisTemplate<Object,Object> redisTemplate;
+    private final RedisTemplate<String,Object> redisTemplate;
 
     @AuthIgnore
     @RequestMapping(value = "/", method = RequestMethod.GET)

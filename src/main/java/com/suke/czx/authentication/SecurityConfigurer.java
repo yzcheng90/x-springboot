@@ -42,7 +42,7 @@ import java.util.List;
 public class SecurityConfigurer {
 
     @Resource
-    private RedisTemplate<Object, Object> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Resource
     private AuthIgnoreConfig authIgnoreConfig;

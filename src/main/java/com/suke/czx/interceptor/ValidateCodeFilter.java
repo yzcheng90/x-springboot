@@ -22,10 +22,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class ValidateCodeFilter extends OncePerRequestFilter {
 
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
-    private final RedisTemplate<Object,Object> redisTemplate;
+    private final RedisTemplate<String,Object> redisTemplate;
     private final AuthenticationFailureHandler authenticationFailureHandler;
 
-    public ValidateCodeFilter(RedisTemplate<Object,Object> redisTemplate, AuthenticationFailureHandler authenticationFailureHandler){
+    public ValidateCodeFilter(RedisTemplate<String,Object> redisTemplate, AuthenticationFailureHandler authenticationFailureHandler){
         this.redisTemplate = redisTemplate;
         this.authenticationFailureHandler = authenticationFailureHandler;
     }

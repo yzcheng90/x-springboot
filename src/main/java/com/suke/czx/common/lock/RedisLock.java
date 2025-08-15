@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class RedisLock {
 
     @Resource
-    private RedisTemplate<Object, Object> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
     /*** 释放锁脚本，原子操作，lua脚本*/
     private static final String UNLOCK_LUA;
     /*** 默认过期时间(30ms)*/

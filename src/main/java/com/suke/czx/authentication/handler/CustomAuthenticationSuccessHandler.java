@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Resource
-    private RedisTemplate<Object,Object> redisTemplate;
+    private RedisTemplate<String,Object> redisTemplate;
 
     @SneakyThrows
     @Override

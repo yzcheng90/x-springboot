@@ -31,10 +31,10 @@ import java.io.IOException;
 @Slf4j
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
-    private final RedisTemplate<Object,Object> redisTemplate;
+    private final RedisTemplate<String,Object> redisTemplate;
     private final AuthIgnoreConfig authIgnoreConfig;
 
-    public AuthenticationTokenFilter(AuthIgnoreConfig authIgnoreConfig,RedisTemplate<Object,Object> template) {
+    public AuthenticationTokenFilter(AuthIgnoreConfig authIgnoreConfig,RedisTemplate<String,Object> template) {
         this.redisTemplate = template;
         this.authIgnoreConfig = authIgnoreConfig;
     }
