@@ -5,15 +5,9 @@
         <el-input size="default" v-model="state.tableData.param.keyword" placeholder="请输入名称"
                   style="max-width: 180px"></el-input>
         <el-button size="default" type="primary" class="ml10" @click="fetchData()">
-          <el-icon>
-            <ele-Search/>
-          </el-icon>
           查询
         </el-button>
         <el-button size="default" type="success" class="ml10" @click="onOpenAddOrEdit('add')">
-          <el-icon>
-            <ele-FolderAdd/>
-          </el-icon>
           新增
         </el-button>
       </div>
@@ -27,8 +21,8 @@
           #end
         <el-table-column label="操作" width="200">
           <template #default="scope">
-            <el-button size="small" text type="primary" @click="onOpenAddOrEdit('edit', scope.row)">修改</el-button>
-            <el-button size="small" text type="primary" @click="onRowDel(scope.row)">删除</el-button>
+            <el-button size="text" type="primary" @click="onOpenAddOrEdit('edit', scope.row)">修改</el-button>
+            <el-button size="text" type="primary" @click="onRowDel(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

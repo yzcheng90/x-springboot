@@ -33,7 +33,6 @@ public class ${className}Controller extends AbstractController {
     /**
      * 列表
      */
-    @Operation(summary = "${comments}列表")
     @GetMapping("/list")
     @ResourceAuth(value = "${comments}列表", module = "${comments}")
     public R list(@RequestParam Map<String, Object> params) {
