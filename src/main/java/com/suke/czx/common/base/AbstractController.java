@@ -1,16 +1,20 @@
 package com.suke.czx.common.base;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.suke.czx.authentication.detail.CustomUserDetailsUser;
 import com.suke.czx.common.utils.HttpContextUtils;
 import com.suke.czx.common.utils.MPPageConvert;
 import com.suke.czx.common.utils.UserUtil;
 import com.suke.czx.modules.tenancy.entity.TbPlatformTenancy;
+import com.suke.czx.modules.tenancy.entity.TenancyBase;
 import com.suke.czx.modules.tenancy.service.TbPlatformTenancyService;
 import jakarta.annotation.Resource;
 import lombok.SneakyThrows;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,9 +58,6 @@ public abstract class AbstractController {
 
     /**
      * 优先从参数获取租户
-     *
-     * @param params
-     * @return
      */
     public String getTenancyId(Map<String, Object> params) {
         String tenancyId = MapUtil.getStr(params, "tenancyId");
@@ -74,8 +75,6 @@ public abstract class AbstractController {
 
     /**
      * 优先从请求头获取租户
-     *
-     * @return
      */
     public String getTenancyId() {
         String tenancyId = HttpContextUtils.getHttpServletRequest().getHeader("tenancyId");
@@ -90,10 +89,32 @@ public abstract class AbstractController {
 
     /**
      * 获取默认租户
-     *
-     * @return
      */
     public TbPlatformTenancy getDefaultTenancy() {
         return tbPlatformTenancyService.getDefaultTenancy();
+    }
+
+    /**
+     * 填充租户信息
+     */
+    public void fullTenancyInfo(List<? extends TenancyBase> list) {
+        if (CollUtil.isNotEmpty(list)) {
+            list.forEach(this::fullTenancyInfo);
+        }
+    }
+
+    public void fullTenancyInfo(IPage<? extends TenancyBase> listPage) {
+        if (CollUtil.isNotEmpty(listPage.getRecords())) {
+            this.fullTenancyInfo(listPage.getRecords());
+        }
+    }
+
+    public void fullTenancyInfo(TenancyBase info) {
+        if (info.getTenancyId() != null) {
+            TbPlatformTenancy tenancy = tbPlatformTenancyService.getById(info.getTenancyId());
+            if (tenancy != null) {
+                info.setTenancyName(tenancy.getTenancyName());
+            }
+        }
     }
 }

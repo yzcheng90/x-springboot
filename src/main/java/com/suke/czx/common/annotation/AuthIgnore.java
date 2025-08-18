@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * @email yzcheng90@qq.com
  * @date 2017-03-23 15:44
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.TYPE,ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface AuthIgnore {
