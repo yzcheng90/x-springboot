@@ -11,7 +11,7 @@
  Target Server Version : 80040 (8.0.40)
  File Encoding         : 65001
 
- Date: 24/11/2025 14:31:03
+ Date: 24/11/2025 15:08:32
 */
 
 SET NAMES utf8mb4;
@@ -59,7 +59,7 @@ CREATE TABLE `sys_menu_new`  (
   `order_sort` int NULL DEFAULT NULL COMMENT '排序',
   `disabled` int NULL DEFAULT NULL COMMENT '是否显示：1显示，0不显示',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 71 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu_new
@@ -68,7 +68,6 @@ INSERT INTO `sys_menu_new` VALUES (1, 0, 'home', '/home', NULL, 'home/index', '�
 INSERT INTO `sys_menu_new` VALUES (2, 0, 'system', '/system', '/system/menu', 'layout/routerView/parent', '系统管理', NULL, 0, 1, 0, 0, 'iconfont icon-xitongshezhi', 'admin', 2, 1);
 INSERT INTO `sys_menu_new` VALUES (3, 0, 'logs', '/logs', NULL, 'layout/routerView/parent', '日志管理', NULL, 0, 1, 0, 0, 'el-icon-office-building', 'admin', 3, 1);
 INSERT INTO `sys_menu_new` VALUES (4, 0, 'codeGen', '/codeGen', NULL, 'code/index', '代码生成', NULL, 0, 1, 0, 0, 'el-icon-set-up', 'admin', 98, 1);
-INSERT INTO `sys_menu_new` VALUES (5, 0, 'swagger', '/swagger', NULL, 'layout/routerView/parent', '接口文档', 'http://localhost:8080/swagger-ui/index.html', 0, 1, 0, 1, 'el-icon-news', 'admin', 99, 1);
 INSERT INTO `sys_menu_new` VALUES (20, 2, 'systemUser', '/systemUser', NULL, 'user/index', '用户管理', NULL, 0, 1, 0, 0, 'el-icon-user', 'admin', 1, 1);
 INSERT INTO `sys_menu_new` VALUES (21, 2, 'systemRole', '/systemRole', NULL, 'role/index', '角色管理', NULL, 0, 1, 0, 0, 'el-icon-lock', 'admin', 2, 1);
 INSERT INTO `sys_menu_new` VALUES (22, 2, 'systemMenu', '/systemMenu', NULL, 'menu/index', '菜单管理', NULL, 0, 1, 0, 0, 'el-icon-box', 'admin', 3, 1);
@@ -83,6 +82,8 @@ INSERT INTO `sys_menu_new` VALUES (53, 0, 'msg', '/msg', '', 'layout/routerView/
 INSERT INTO `sys_menu_new` VALUES (54, 53, 'msgRecord', '/msgRecord', NULL, 'msg/record', '短信发送记录', NULL, 0, 1, 0, 0, 'iconfont icon-caidan', 'admin', 4, 1);
 INSERT INTO `sys_menu_new` VALUES (55, 53, 'msgService', '/msgService', NULL, 'msg/service', '短信服务', NULL, 0, 1, 0, 0, 'iconfont icon-caidan', 'admin', 1, 1);
 INSERT INTO `sys_menu_new` VALUES (56, 53, 'msgTemplate', '/msgTemplate', NULL, 'msg/template', '短信模板', NULL, 0, 1, 0, 0, 'iconfont icon-caidan', 'admin', 2, 1);
+INSERT INTO `sys_menu_new` VALUES (69, 2, 'ossSetting', '/ossSetting', NULL, 'ossSetting/index', '存储配置', NULL, 0, 1, 0, 0, 'el-icon-coin', 'admin', 4, 1);
+INSERT INTO `sys_menu_new` VALUES (70, 2, 'param', '/param', NULL, 'param/index', '参数配置', NULL, 0, 1, 0, 0, 'el-icon-lock', 'admin', 4, 1);
 
 -- ----------------------------
 -- Table structure for sys_oss
@@ -353,6 +354,7 @@ CREATE TABLE `tb_login_log`  (
 -- ----------------------------
 -- Records of tb_login_log
 -- ----------------------------
+INSERT INTO `tb_login_log` VALUES ('f1404d024722c5ace86e2b96d95776ec', 'admin', '用户登录成功', '2025-11-24 15:04:11', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36');
 
 -- ----------------------------
 -- Table structure for tb_platform_tenancy
