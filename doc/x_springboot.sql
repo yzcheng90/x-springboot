@@ -11,7 +11,7 @@
  Target Server Version : 80040 (8.0.40)
  File Encoding         : 65001
 
- Date: 24/11/2025 14:25:38
+ Date: 24/11/2025 14:31:03
 */
 
 SET NAMES utf8mb4;
@@ -122,6 +122,28 @@ CREATE TABLE `sys_oss_setting`  (
 -- Records of sys_oss_setting
 -- ----------------------------
 INSERT INTO `sys_oss_setting` VALUES (1, 'http://127.0.0.1:9000', 'minio', 'admin', 'admin123456', 'test', 'http://127.0.0.1:9000', '', '2024-11-27 16:31:05', 1, NULL);
+
+-- ----------------------------
+-- Table structure for sys_param
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_param`;
+CREATE TABLE `sys_param`  (
+  `param_id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '参数ID',
+  `param_describe` varchar(5000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '参数描述',
+  `param_key` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '参数KEY',
+  `param_value` varchar(5000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '参数VALUE',
+  `create_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `param_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '参数名称',
+  `param_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '参数类型',
+  `tenancy_id` bigint NULL DEFAULT NULL COMMENT '租户ID',
+  `update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`param_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '参数管理' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_param
+-- ----------------------------
+INSERT INTO `sys_param` VALUES ('d5edaee45f02569fa31bb1f464d24c1b', '系统登录时的超级验证码，enable：开关，code：具体验证码', 'sys_super_code', '{\"enable\":true,\"code\":172839}', '2025-10-16 11:50:09', '系统登录验证码', '', 1, '2025-10-16 11:50:09');
 
 -- ----------------------------
 -- Table structure for sys_permission
