@@ -7,8 +7,8 @@ import com.suke.czx.modules.sys.entity.SysRole;
 import com.suke.czx.modules.sys.entity.SysRoleMenu;
 import com.suke.czx.modules.sys.entity.SysRolePermission;
 import com.suke.czx.modules.sys.mapper.SysRoleMapper;
-import com.suke.czx.modules.sys.service.SysRoleMenuService;
-import com.suke.czx.modules.sys.service.SysRolePermissionService;
+import com.suke.czx.modules.sys.mapper.SysRoleMenuMapper;
+import com.suke.czx.modules.sys.mapper.SysRolePermissionMapper;
 import com.suke.czx.modules.sys.service.SysRoleService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,8 +31,8 @@ import java.util.stream.Collectors;
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
 
     private final SysRoleMapper sysRoleMapper;
-    private final SysRoleMenuService sysRoleMenuService;
-    private final SysRolePermissionService sysRolePermissionService;
+    private final SysRoleMenuMapper sysRoleMenuMapper;
+    private final SysRolePermissionMapper sysRolePermissionMapper;
 
     @Override
     @Transactional
@@ -40,13 +40,13 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         role.setCreateTime(new Date());
         sysRoleMapper.insert(role);
         if (CollUtil.isNotEmpty(role.getMenuIdList())) {
-            List<SysRoleMenu> sysRoleMenus = role.getMenuIdList().stream().map(id -> {
+            List<SysRoleMenu> sysRoleMenus = role.getMenuIdList().stream().distinct().map(id -> {
                 SysRoleMenu menu = new SysRoleMenu();
                 menu.setMenuId(id);
                 menu.setRoleId(role.getRoleId());
                 return menu;
             }).collect(Collectors.toList());
-            sysRoleMenuService.saveBatch(sysRoleMenus);
+            sysRoleMenuMapper.insert(sysRoleMenus);
         }
         if (CollUtil.isNotEmpty(role.getPermissionList())) {
             this.saveRolePermission(role);
@@ -58,42 +58,54 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public void updateRoleMenu(SysRole role) {
         sysRoleMapper.updateById(role);
         if (CollUtil.isNotEmpty(role.getMenuIdList())) {
-            sysRoleMenuService.remove(Wrappers.<SysRoleMenu>query().lambda().eq(SysRoleMenu::getRoleId, role.getRoleId()));
-            List<SysRoleMenu> sysRoleMenus = role.getMenuIdList().stream().map(id -> {
+            sysRoleMenuMapper.delete(Wrappers.<SysRoleMenu>query().lambda().eq(SysRoleMenu::getRoleId, role.getRoleId()));
+            List<SysRoleMenu> sysRoleMenus = role.getMenuIdList().stream().distinct().map(id -> {
                 SysRoleMenu menu = new SysRoleMenu();
                 menu.setMenuId(id);
                 menu.setRoleId(role.getRoleId());
                 return menu;
             }).collect(Collectors.toList());
-            sysRoleMenuService.saveBatch(sysRoleMenus);
+            sysRoleMenuMapper.insert(sysRoleMenus);
         }
 
         if (CollUtil.isNotEmpty(role.getPermissionList())) {
-            sysRolePermissionService.remove(Wrappers.<SysRolePermission>query().lambda().eq(SysRolePermission::getRoleId, role.getRoleId()));
+            sysRolePermissionMapper.delete(Wrappers.<SysRolePermission>query().lambda().eq(SysRolePermission::getRoleId, role.getRoleId()));
             this.saveRolePermission(role);
         }
+
     }
 
     public void saveRolePermission(SysRole role) {
-        List<SysRolePermission> sysPermissions = role.getPermissionList().stream().map(id -> {
+        List<SysRolePermission> sysPermissions = role.getPermissionList().stream().distinct().map(id -> {
             SysRolePermission menu = new SysRolePermission();
             menu.setPermissionId(id);
             menu.setRoleId(role.getRoleId());
             return menu;
         }).collect(Collectors.toList());
-        sysRolePermissionService.saveBatch(sysPermissions);
+        sysRolePermissionMapper.insert(sysPermissions);
     }
 
     @Override
-    public List<Long> queryRoleIdList(Long createUserId) {
+    public List<SysRole> getRoleListByUserId(String userId) {
+        return baseMapper.getRoleListByUserId(userId);
+    }
+
+    @Override
+    public List<Long> queryRoleIdList(String createUserId) {
         return sysRoleMapper.queryRoleIdList(createUserId);
+    }
+
+    @Override
+    public List<Long> queryUserRoleIdList(String userId) {
+        return baseMapper.queryUserRoleIdList(userId);
     }
 
 
     @Override
     public void deleteBath(Long id) {
         baseMapper.deleteById(id);
-        sysRoleMenuService.remove(Wrappers.<SysRoleMenu>query().lambda().eq(SysRoleMenu::getRoleId, id));
+        sysRoleMenuMapper.delete(Wrappers.<SysRoleMenu>query().lambda().eq(SysRoleMenu::getRoleId, id));
+
     }
 
 }

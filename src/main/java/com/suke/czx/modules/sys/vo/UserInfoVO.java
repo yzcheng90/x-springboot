@@ -18,6 +18,7 @@ public class UserInfoVO {
     public String time;
     public String[] roles;
     public String[] authBtnList;
+    public String roleNames;
 
 
 }

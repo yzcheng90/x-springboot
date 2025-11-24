@@ -14,11 +14,14 @@ import java.util.List;
  * @date 2016年9月18日 上午9:42:52
  */
 public interface SysRoleService extends IService<SysRole> {
+    List<SysRole> getRoleListByUserId(String userId);
 
     /**
      * 查询用户创建的角色ID列表
      */
-    List<Long> queryRoleIdList(Long createUserId);
+    List<Long> queryRoleIdList(String createUserId);
+
+    List<Long> queryUserRoleIdList(String userId);
 
     void deleteBath(Long id);
 

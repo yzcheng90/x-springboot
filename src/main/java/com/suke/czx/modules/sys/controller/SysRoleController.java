@@ -1,14 +1,20 @@
 package com.suke.czx.modules.sys.controller;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.suke.czx.common.annotation.ResourceAuth;
 import com.suke.czx.common.annotation.SysLog;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.common.utils.R;
 import com.suke.czx.modules.sys.entity.SysRole;
+import com.suke.czx.modules.sys.entity.SysRoleMenu;
+import com.suke.czx.modules.sys.entity.SysRolePermission;
+import com.suke.czx.modules.sys.service.SysRoleMenuService;
+import com.suke.czx.modules.sys.service.SysRolePermissionService;
 import com.suke.czx.modules.sys.service.SysRoleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -30,6 +36,8 @@ import java.util.Map;
 public class SysRoleController extends AbstractController {
 
     private final SysRoleService sysRoleService;
+    private final SysRoleMenuService sysRoleMenuService;
+    private final SysRolePermissionService sysRolePermissionService;
 
     /**
      * 角色列表
@@ -38,11 +46,6 @@ public class SysRoleController extends AbstractController {
     @ResourceAuth(value = "角色列表", module = "角色管理")
     public R list(@RequestParam Map<String, Object> params) {
         QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
-        //如果不是超级管理员，则只查询自己创建的角色列表
-        if (!getUserId().equals(Constant.SUPER_ADMIN)) {
-            queryWrapper.lambda().eq(SysRole::getCreateUserId, getUserId());
-        }
-
         //查询列表数据
         final String keyword = mpPageConvert.getKeyword(params);
         if (StrUtil.isNotEmpty(keyword)) {
@@ -51,6 +54,14 @@ public class SysRoleController extends AbstractController {
                     .and(func -> func.like(SysRole::getRoleName, keyword));
         }
         IPage<SysRole> listPage = sysRoleService.page(mpPageConvert.<SysRole>pageParamConvert(params), queryWrapper);
+        if (CollUtil.isNotEmpty(listPage.getRecords())) {
+            listPage.getRecords().forEach(item -> {
+                List<Long> menuIds = sysRoleMenuService.list(Wrappers.<SysRoleMenu>query().lambda().eq(SysRoleMenu::getRoleId, item.getRoleId())).stream().map(SysRoleMenu::getMenuId).toList();
+                item.setMenuIdList(menuIds);
+                List<String> permissionIds = sysRolePermissionService.list(Wrappers.<SysRolePermission>query().lambda().eq(SysRolePermission::getRoleId, item.getRoleId())).stream().map(SysRolePermission::getPermissionId).toList();
+                item.setPermissionList(permissionIds);
+            });
+        }
         return R.ok().setData(listPage);
     }
 
@@ -84,9 +95,11 @@ public class SysRoleController extends AbstractController {
     @ResourceAuth(value = "修改角色", module = "角色管理")
     @PostMapping(value = "/update")
     public R update(@RequestBody SysRole role) {
+        if (role.getRoleId() == null) {
+            return R.error("角色ID不能为空");
+        }
         role.setCreateUserId(getUserId());
         sysRoleService.updateRoleMenu(role);
-
         return R.ok();
     }
 

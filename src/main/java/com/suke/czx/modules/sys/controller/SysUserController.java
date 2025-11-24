@@ -1,9 +1,12 @@
 package com.suke.czx.modules.sys.controller;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.suke.czx.common.annotation.ResourceAuth;
 import com.suke.czx.common.annotation.SysLog;
 import com.suke.czx.common.base.AbstractController;
@@ -11,8 +14,10 @@ import com.suke.czx.common.utils.Constant;
 import com.suke.czx.common.utils.HttpContextUtils;
 import com.suke.czx.common.utils.IPUtils;
 import com.suke.czx.common.utils.R;
+import com.suke.czx.modules.sys.entity.SysRole;
 import com.suke.czx.modules.sys.entity.SysUser;
 import com.suke.czx.modules.sys.service.SysMenuNewService;
+import com.suke.czx.modules.sys.service.SysRoleService;
 import com.suke.czx.modules.sys.service.SysUserService;
 import com.suke.czx.modules.sys.vo.RouterInfo;
 import com.suke.czx.modules.sys.vo.SysMenuNewVO;
@@ -25,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 系统用户
@@ -41,6 +47,7 @@ public class SysUserController extends AbstractController {
     private final SysUserService sysUserService;
     private final PasswordEncoder passwordEncoder;
     private final SysMenuNewService sysMenuNewService;
+    private final SysRoleService sysRoleService;
 
     /**
      * 所有用户列表
@@ -65,6 +72,12 @@ public class SysUserController extends AbstractController {
                             .like(SysUser::getMobile, keyword));
         }
         IPage<SysUser> listPage = sysUserService.page(mpPageConvert.<SysUser>pageParamConvert(params), queryWrapper);
+        if (CollUtil.isNotEmpty(listPage.getRecords())) {
+            listPage.getRecords().forEach(item -> {
+                List<Long> roleList = sysRoleService.getRoleListByUserId(item.getUserId()).stream().map(SysRole::getRoleId).toList();
+                item.setRoleIdList(roleList);
+            });
+        }
         return R.ok().setData(listPage);
     }
 
@@ -89,7 +102,10 @@ public class SysUserController extends AbstractController {
         userInfo.setName(sysUser.getName());
         userInfo.setLoginIp(IPUtils.getIpAddr(HttpContextUtils.getHttpServletRequest()));
         final String photo = sysUser.getPhoto();
-        userInfo.setPhoto(photo == null ? "https://img0.baidu.com/it/u=1833472230,3849481738&fm=253&fmt=auto?w=200&h=200" : photo);
+        userInfo.setPhoto(photo == null ? "https://p9.itc.cn/q_70/images03/20240101/a37b9cd11a4844139183b6ba30758b2f.png" : photo);
+
+        String roles = sysRoleService.getRoleListByUserId(sysUser.getUserId()).stream().map(SysRole::getRoleName).collect(Collectors.joining(","));
+        userInfo.setRoleNames(StrUtil.isEmpty(roles) ? "管理员" : roles);
         userInfo.setRoles(new String[]{sysUser.getUserId().equals(Constant.SUPER_ADMIN) ? "admin" : "common"});
         userInfo.setTime(DateUtil.now());
         userInfo.setAuthBtnList(new String[]{"btn.add", "btn.del", "btn.edit", "btn.link"});
@@ -103,7 +119,9 @@ public class SysUserController extends AbstractController {
     @SysLog("修改密码")
     @RequestMapping(value = "/password", method = RequestMethod.POST)
     @ResourceAuth(value = "修改密码", module = "系统用户")
-    public R password(String password, String newPassword) {
+    public R password(@RequestBody Map<String, Object> param) {
+        String password = MapUtil.getStr(param, "password");
+        String newPassword = MapUtil.getStr(param, "newPassword");
         if (StrUtil.isEmpty(newPassword)) {
             return R.error("新密码不为能空");
         }
@@ -118,6 +136,27 @@ public class SysUserController extends AbstractController {
         return R.ok();
     }
 
+    @SysLog("审核用户")
+    @PostMapping(value = "/audit")
+    @ResourceAuth(value = "审核用户", module = "系统用户")
+    public R audit(@RequestBody SysUser user) {
+        String userId = user.getUserId();
+        if (StrUtil.isEmpty(userId)) {
+            return R.error("用户ID为空");
+        }
+        Integer auditStatus = user.getAuditStatus();
+        if (auditStatus == null) {
+            return R.error("审核状态为空");
+        }
+
+        SysUser sysUser = sysUserService.getById(userId);
+        if (auditStatus == 2) {
+            sysUser.setStatus(1);
+        }
+        sysUser.setAuditStatus(auditStatus);
+        sysUserService.updateById(sysUser);
+        return R.ok();
+    }
 
     /**
      * 保存用户
@@ -126,7 +165,20 @@ public class SysUserController extends AbstractController {
     @PostMapping(value = "/save")
     @ResourceAuth(value = "保存用户", module = "系统用户")
     public R save(@RequestBody @Validated SysUser user) {
+        long usernameCount = sysUserService.count(Wrappers.<SysUser>query().lambda().eq(SysUser::getUsername, user.getUsername()));
+        if (usernameCount > 0) {
+            return R.error("用户名已存在");
+        }
+        long mobileCount = sysUserService.count(Wrappers.<SysUser>query().lambda().eq(SysUser::getMobile, user.getMobile()));
+        if (mobileCount > 0) {
+            return R.error("手机号已注册");
+        }
+        long emailCount = sysUserService.count(Wrappers.<SysUser>query().lambda().eq(SysUser::getEmail, user.getEmail()));
+        if (emailCount > 0) {
+            return R.error("邮箱已注册");
+        }
         user.setCreateUserId(getUserId());
+        user.setAuditStatus(2);//通过
         sysUserService.saveUserRole(user);
         return R.ok();
     }
