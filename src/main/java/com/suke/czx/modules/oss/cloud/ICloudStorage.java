@@ -2,21 +2,24 @@ package com.suke.czx.modules.oss.cloud;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.util.UUID;
 
 public interface ICloudStorage {
 
-    default String newFileName(){
-        return  UUID.randomUUID().toString().replaceAll("-", "");
+    default String newFileName() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
-    default String newFileName(String suffix){
-        return  UUID.randomUUID().toString().replaceAll("-", "") + "." + suffix;
+
+    default String newFileName(String suffix) {
+        return UUID.randomUUID().toString().replaceAll("-", "") + "." + suffix;
     }
 
     /**
      * 文件路径
+     *
      * @param prefix 前缀
      * @param suffix 后缀
      * @return 返回上传路径
@@ -26,12 +29,17 @@ public interface ICloudStorage {
         //文件路径
         String path = DateUtil.today() + "/" + newFileName();
 
-        if(StrUtil.isNotBlank(prefix)){
+        if (StrUtil.isNotBlank(prefix)) {
             path = prefix + "/" + path;
         }
 
         return path + suffix;
     }
+
+    /**
+     * 文件上传
+     */
+    String upload(MultipartFile file, String objectName);
 
     /**
      * 文件上传

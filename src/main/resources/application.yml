@@ -35,15 +35,6 @@ springdoc:
     enabled: false # 开启swagger界面，依赖OpenApi，需要OpenApi同时开启
     path: /swagger-ui/index.html # 自定义路径，默认为"/swagger-ui/index.html"
 
-
-#七牛 AK  和  SK可以去密钥管理中查询
-qiniu:
-  accessKey: 2222
-  secretKey: 33333
-  bucketName: qh-file
-  domain: https://www.qiniu.com
-  prefix: task
-
 # mybaits-plus配置
 mybatis-plus:
   # MyBatis Mapper所对应的XML文件位置

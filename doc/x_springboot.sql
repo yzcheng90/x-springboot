@@ -11,7 +11,7 @@
  Target Server Version : 80040 (8.0.40)
  File Encoding         : 65001
 
- Date: 18/08/2025 17:25:12
+ Date: 24/11/2025 14:25:38
 */
 
 SET NAMES utf8mb4;
@@ -32,6 +32,10 @@ CREATE TABLE `sys_log`  (
   `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 156 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '系统日志' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_log
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_menu_new
@@ -94,6 +98,30 @@ CREATE TABLE `sys_oss`  (
 -- ----------------------------
 -- Records of sys_oss
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_oss_setting
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_oss_setting`;
+CREATE TABLE `sys_oss_setting`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `url` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT 'URL地址',
+  `type` varchar(16) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '类型',
+  `access_key` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '访问密钥',
+  `secret_key` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '密钥',
+  `bucket_name` varchar(16) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '桶名称',
+  `view` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
+  `prefix` varchar(16) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '前缀',
+  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `status` int NULL DEFAULT NULL COMMENT '1:默认 0可选',
+  `region` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '所属区域',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '文件上传配置' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_oss_setting
+-- ----------------------------
+INSERT INTO `sys_oss_setting` VALUES (1, 'http://127.0.0.1:9000', 'minio', 'admin', 'admin123456', 'test', 'http://127.0.0.1:9000', '', '2024-11-27 16:31:05', 1, NULL);
 
 -- ----------------------------
 -- Table structure for sys_permission
@@ -230,6 +258,7 @@ CREATE TABLE `sys_user`  (
   `photo` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '头像',
   `name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '姓名',
   `tenancy_id` int NULL DEFAULT NULL COMMENT '租户ID',
+  `audit_status` int NULL DEFAULT NULL COMMENT '审核状态  0：拒绝   1：审核中，2：通过',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username`(`username` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '系统用户' ROW_FORMAT = DYNAMIC;
@@ -237,8 +266,8 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('0', 'admin', '$2a$10$RG5KOoicH3f3IH948VW3AOzhJKepSteupeuQ8JAB28ElsYH3KlU4a', 'yzcheng90@qq.com', '13612345678', 1, '1', '2016-11-11 11:11:11', NULL, NULL, NULL);
-INSERT INTO `sys_user` VALUES ('53e3215ed12b227b59b6b3b9e9efb984', 'test', '$2a$10$yhqIeY5RhmPJxUsCnRGpBu7gDEBF.dwx2YFK4tbCCtmBndlBQSIG2', 'yzcheng90@qq.com', '13888888888', 1, '0', '2023-01-29 14:31:16', NULL, NULL, NULL);
+INSERT INTO `sys_user` VALUES ('0', 'admin', '$2a$10$RG5KOoicH3f3IH948VW3AOzhJKepSteupeuQ8JAB28ElsYH3KlU4a', 'yzcheng90@qq.com', '13612345678', 1, '1', '2016-11-11 11:11:11', NULL, NULL, NULL, NULL);
+INSERT INTO `sys_user` VALUES ('53e3215ed12b227b59b6b3b9e9efb984', 'test', '$2a$10$yhqIeY5RhmPJxUsCnRGpBu7gDEBF.dwx2YFK4tbCCtmBndlBQSIG2', 'yzcheng90@qq.com', '13888888888', 1, '0', '2023-01-29 14:31:16', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -298,6 +327,10 @@ CREATE TABLE `tb_login_log`  (
   `option_terminal` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '操作终端',
   PRIMARY KEY (`log_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '登录日志管理' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tb_login_log
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for tb_platform_tenancy
@@ -367,7 +400,7 @@ CREATE TABLE `x_message_service`  (
 -- ----------------------------
 -- Records of x_message_service
 -- ----------------------------
-INSERT INTO `x_message_service` VALUES (1, '阿里云New', 'https://cxkjsms.market.alicloudapi.com/chuangxinsms/dxjk', '', 'xxxx', 'xxxx', 'xxxx', '【皮皮虾】您的验证码为：#code，有效期5分钟，请确保是本人操作，不要把验证码泄露给其他人。', 1, 'com.suke.czx.modules.msg.component.AliyunNewSendMessageComponent', '2', 1, 1);
+INSERT INTO `x_message_service` VALUES (1, '阿里云New', 'https://cxkjsms.market.alicloudapi.com/chuangxinsms/dxjk', '', 'xxxxxxx', 'xxxxxx', 'd448f27ec2594fd29115ea74xxxx', '【XXXX】您的验证码为：#code，有效期5分钟，请确保是本人操作，不要把验证码泄露给其他人。', 1, 'com.suke.czx.modules.msg.component.AliyunNewSendMessageComponent', '2', 1, 1);
 
 -- ----------------------------
 -- Table structure for x_message_service_send_record
@@ -390,6 +423,10 @@ CREATE TABLE `x_message_service_send_record`  (
   `app_id` int NULL DEFAULT NULL COMMENT '应用ID',
   PRIMARY KEY (`record_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '短信发送记录（按月分表）' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of x_message_service_send_record
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for x_message_service_send_record_2025_08

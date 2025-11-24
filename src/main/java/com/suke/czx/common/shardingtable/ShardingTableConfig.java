@@ -194,7 +194,7 @@ public class ShardingTableConfig implements TableNameHandler {
      * 服务启动后，延迟5秒执行
      * 检测当前月分表情况,如果不存在则创建
      */
-    @Scheduled(initialDelay = 5, timeUnit = TimeUnit.SECONDS)
+//    @Scheduled(initialDelay = 5, timeUnit = TimeUnit.SECONDS)
     public void checkCurrMonthTable() {
         log.info("正在检测当前月的分表是否创建完成");
         // 上锁30秒

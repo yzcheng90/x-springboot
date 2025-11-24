@@ -1,5 +1,7 @@
 package com.suke.czx.common.utils;
 
+import lombok.Getter;
+
 /**
  * 常量
  *
@@ -63,32 +65,29 @@ public class Constant {
     /**
      * 云服务商
      */
+    @Getter
     public enum CloudService {
         /**
          * 七牛云
          */
-        QINIU(1),
+        QINIU("qiniu"),
         /**
          * 阿里云
          */
-        ALIYUN(2),
+        ALIYUN("aliyun"),
         /**
          * 腾讯云
          */
-        QCLOUD(3),
+        QCLOUD("qcloud"),
         /**
          * minio
          */
-        MINIO(4);
+        MINIO("minio");
 
-        private int value;
+        private final String value;
 
-        CloudService(int value) {
+        CloudService(String value) {
             this.value = value;
-        }
-
-        public int getValue() {
-            return value;
         }
     }
 

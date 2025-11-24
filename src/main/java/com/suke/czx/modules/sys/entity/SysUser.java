@@ -49,6 +49,9 @@ public class SysUser implements Serializable {
     @Schema(description = "状态  0：禁用   1：正常")
     public Integer status;
 
+    @Schema(description = "审核状态  0：拒绝   1：审核中，2：通过")
+    public Integer auditStatus;
+
     @Schema(description = "创建者ID")
     public String createUserId;
 
