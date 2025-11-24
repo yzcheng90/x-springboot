@@ -3,6 +3,7 @@ package com.suke.czx.common.aspect;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.suke.czx.authentication.detail.CustomUserDetailsUser;
 import com.suke.czx.common.utils.HttpContextUtils;
 import com.suke.czx.common.utils.IPUtils;
 import com.suke.czx.modules.sys.entity.SysLog;
@@ -87,11 +88,9 @@ public class SysLogAspect {
         sysLog.setIp(IPUtils.getIpAddr(request));
 
         //用户名
-        String userStr = JSONUtil.toJsonStr(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        if (!StrUtil.isNotEmpty(userStr) && !userStr.equals("anonymousUser")) {
-            JSONObject userDetailsUser = JSONUtil.parseObj(userStr);
-            String username = userDetailsUser.getStr("username");
-            sysLog.setUsername(username);
+        Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (object instanceof CustomUserDetailsUser user) {
+            sysLog.setUsername(user.getUsername());
         }
 
         sysLog.setTime(time);
