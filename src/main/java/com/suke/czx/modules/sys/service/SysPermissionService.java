@@ -16,4 +16,7 @@ public interface SysPermissionService extends IService<SysPermission> {
 
     List<SysPermission> getPermissionListByUserId(String userId);
 
+    List<SysPermission> getAllList();
+
+    void clearCache();
 }

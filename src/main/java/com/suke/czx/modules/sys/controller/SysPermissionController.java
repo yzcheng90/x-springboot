@@ -52,7 +52,7 @@ public class SysPermissionController extends AbstractController {
         if (StrUtil.isNotEmpty(keyword)) {
             queryWrapper.lambda().like(SysPermission::getName, keyword).or().like(SysPermission::getModuleName, keyword);
         }
-        Map<String, List<SysPermission>> list = sysPermissionService.list().stream().collect(Collectors.groupingBy(SysPermission::getModuleName));
+        Map<String, List<SysPermission>> list = sysPermissionService.getAllList().stream().collect(Collectors.groupingBy(SysPermission::getModuleName));
 
         List<SysPermission> result = new ArrayList<>();
         if (CollUtil.isNotEmpty(list)) {
@@ -60,10 +60,7 @@ public class SysPermissionController extends AbstractController {
                 SysPermission permission = new SysPermission();
                 permission.setModuleName(key);
                 permission.setPermissionId(UUID.randomUUID().toString());
-                value = value.stream().map(v -> {
-                    v.setModuleName(null);
-                    return v;
-                }).collect(Collectors.toList());
+                value = value.stream().peek(v -> v.setModuleName(null)).collect(Collectors.toList());
                 permission.setChildren(value);
                 result.add(permission);
             });
@@ -80,12 +77,11 @@ public class SysPermissionController extends AbstractController {
         Map<String, List<SysPermission>> list = sysPermissionService
                 .list()
                 .stream()
-                .map(p -> {
+                .peek(p -> {
                     // 未配置菜单的权限
                     if (p.getMenuId() == null) {
                         p.setMenuId("null");
                     }
-                    return p;
                 })
                 .collect(Collectors.groupingBy(SysPermission::getMenuId));
 
@@ -94,20 +90,21 @@ public class SysPermissionController extends AbstractController {
             list.forEach((key, value) -> {
                 if (!key.equals("null")) {
                     HashMap<String, Object> hashMap = new HashMap<>();
-                    log.debug("key:{}", key);
                     SysMenuNew menu = sysMenuNewService.getById(key);
-                    hashMap.put("label", menu.getTitle());
-                    // 这个值不要
-                    hashMap.put("permissionId", String.valueOf(System.currentTimeMillis()));
-                    hashMap.put("menuId", menu.getMenuId());
-                    hashMap.put("children", value.stream().map(per -> {
-                        HashMap<String, Object> map = new HashMap<>();
-                        map.put("label", per.getName());
-                        map.put("menuId", per.getMenuId());
-                        map.put("permissionId", per.getPermissionId());
-                        return map;
-                    }).collect(Collectors.toList()));
-                    result.add(hashMap);
+                    if (menu != null) {
+                        hashMap.put("label", menu.getTitle());
+                        // 这个值不要
+                        hashMap.put("permissionId", String.valueOf(System.currentTimeMillis()));
+                        hashMap.put("menuId", menu.getMenuId());
+                        hashMap.put("children", value.stream().map(per -> {
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("label", per.getName());
+                            map.put("menuId", per.getMenuId());
+                            map.put("permissionId", per.getPermissionId());
+                            return map;
+                        }).collect(Collectors.toList()));
+                        result.add(hashMap);
+                    }
                 }
             });
             // 未配置菜单的权限

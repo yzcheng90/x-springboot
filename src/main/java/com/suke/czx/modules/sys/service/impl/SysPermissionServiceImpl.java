@@ -23,4 +23,13 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     public List<SysPermission> getPermissionListByUserId(String userId) {
         return baseMapper.getPermissionListByUserId(userId);
     }
+
+    @Override
+    public List<SysPermission> getAllList() {
+        return baseMapper.getAllList();
+    }
+
+    public void clearCache() {
+        log.debug("删除用户权限缓存");
+    }
 }
