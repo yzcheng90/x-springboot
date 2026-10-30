@@ -83,27 +83,13 @@ X-SpringBoot
 ![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20230122174204.png)
 
 
-## 学习交流
-
-x-springboot 是完全开源免费的项目，目前仍然在优化迭代中，旨在帮助开发者更方便地进行快速敏捷开发，有使用问题欢迎在交流群内提问。
-
-|                                              Q群                                              |                                               微信群                                                |                                            作者微信                                            |
-|:--------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------:|
-| <img src="https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/qq_group.jpg" width=170> | <img src="https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/wechat_group.jpg" width=170> | <img src="https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/wechat.jpg" width=170> |
-
-> 添加微信请注明来意
-
 ## 贡献
 
 如果您发现了任何问题或有改进建议，请创建一个[issue](issues/new)或提交一个PR。我们欢迎您的贡献！
 
 ## 支持
 
-如果感觉本项目对你工作或学习有帮助，请帮我点一个✨Star,这将是对我极大的鼓励与支持, 也可以在下方请我喝一杯咖啡
-
-|                                               微信                                               |                                            支付宝                                             |
-|:----------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------:|
-| <img src="https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/wechat_pay.jpg" width=170> | <img src="https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/alipay.jpg" width=170> |
+如果感觉本项目对你工作或学习有帮助，请帮我点一个✨Star,这将是对我极大的鼓励与支持
 
 
 
